@@ -137,7 +137,6 @@
     "description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum!\nDolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, exercitation ullamco laboris nisi ut aliquip",
     "imageCover": "tour-10-cover.jpg",
     "images": ["tour-10-1.jpg", "tour-10-2.jpg", "tour-10-3.jpg"],
-    "startDates": ["2021-12-16,10:00", "2022-01-16,10:00", "2022-12-12,10:00"],
-    "id": "5408bc88-c98a-4fb2-b511-ce1f7b8d270c"
+    "startDates": ["2021-12-16,10:00", "2022-01-16,10:00", "2022-12-12,10:00"]
   }
 ]
