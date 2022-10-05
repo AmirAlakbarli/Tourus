@@ -1,10 +1,15 @@
 const { v4: uuidv4 } = require("uuid");
 const Tour = require("../model/tour");
+const GlobalFilter = require("../utils/GlobalFilter");
 //! Get Dev data Tours:
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    let allTours = new GlobalFilter(Tour.find(), req.query);
+
+    //! Filter, Sorting, Fields, Pagination
+    allTours.filter().fields().sort().paginate();
+    const tours = await allTours.query;
     res.json({
       success: true,
       quantity: tours.length,
