@@ -2,12 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const tourController = require("../controller/tourController");
-const {setHeaderQuery} = require("../middleware/top3tours");
+const { setHeaderQuery } = require("../middleware/top3tours");
 
 //! Routes:
 
 //! Get all tours
 router.get("/", tourController.getAllTours);
+
+//! Get statistics
+router.get("/statistics", tourController.getStatistics);
+
+//! Get tour stats
+router.get("/tour-stats/:year", tourController.getTourStats);
 
 //! Get top 3 tours
 router.get("/top-3", setHeaderQuery, tourController.getAllTours);

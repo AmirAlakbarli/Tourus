@@ -23,7 +23,7 @@ class GlobalFilter {
       const sortFields = this.queryStr.sort.split(",").join(" ");
       this.query.sort(sortFields);
     } else {
-      query.sort("-createdAt");
+      this.query.sort("-createdAt");
     }
     return this;
   }
