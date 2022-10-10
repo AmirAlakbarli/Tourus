@@ -18,6 +18,14 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use("/api/v1/tours", tourRouter);
 
+//! Any request with non existing endpoint
+app.use((req, res) => {
+  res.json({
+    success: false,
+    message: `The ${req.originalUrl} does not exist!`,
+  });
+});
+
 //! define PORT number
 const PORT = process.env.PORT || 5000;
 

@@ -24,4 +24,10 @@ router.get("/:id", tourController.getTourById);
 //! add tour
 router.post("/", tourController.createTour);
 
+//! update tour
+router.patch("/:id", tourController.updateTour);
+
+//! delete tour
+router.delete("/:id", tourController.deleteTour);
+
 module.exports = router;

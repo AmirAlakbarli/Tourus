@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const validator = require("validator");
 
 const tourSchema = mongoose.Schema(
   {
@@ -7,11 +8,25 @@ const tourSchema = mongoose.Schema(
       type: String,
       required: [true, "Tour name must be defined!"],
       unique: false,
+      trim: true,
+      minLength: [3, "Tour name must be at least 3 characters"],
+      maxLength: [15, "Tour name must be at most 15 characters"],
+      // validate: [validator.isAlpha, "Only letters are allowed"],
     },
 
     price: {
       type: Number,
       required: [true, "Tour price must be defined!"],
+    },
+
+    discount: {
+      type: Number,
+      validate: {
+        validator: function (doc) {
+          return this.price > doc;
+        },
+        message: `Discount of {VALUE} must not be greater than price`,
+      },
     },
 
     duration: {
@@ -27,12 +42,17 @@ const tourSchema = mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, "Tour difficulty must be defined!"],
-      enum: ["easy", "medium", "difficult"],
+      enum: {
+        values: ["easy", "medium", "difficult"],
+        message: "Difficulty can be only one of these: easy, medium, hard",
+      },
     },
 
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      min: [1, "Tour rating must be at least 1"],
+      max: [5, "Tour rating must be at most 5"],
     },
 
     ratingsQuantity: {
@@ -46,10 +66,11 @@ const tourSchema = mongoose.Schema(
     },
 
     slug: String,
-    status: {
-      type: Number,
-      enum: [0, 1],
-    },
+
+    // status: {
+    //   type: Number,
+    //   enum: [0, 1],
+    // },
 
     description: {
       type: String,
@@ -92,18 +113,17 @@ tourSchema.pre("save", function (next) {
 // });
 
 //! Query based middleware
-tourSchema.pre(/^find/, function (next) {
-  this.find({ status: { $ne: 0 } });
-  next();
-});
+// tourSchema.pre(/^find/, function (next) {
+//   this.find({ status: { $ne: 0 } });
+//   next();
+// });
 
 //! Aggregation middleware
-tourSchema.pre("aggregate", function (next) {
-  console.log("o");
-  const pipelines = this.pipeline();
-  pipelines.unshift({ $match: { status: { $ne: 0 } } });
-  next();
-});
+// tourSchema.pre("aggregate", function (next) {
+//   const pipelines = this.pipeline();
+//   pipelines.unshift({ $match: { status: { $ne: 0 } } });
+//   next();
+// });
 
 const Tour = mongoose.model("tour", tourSchema);
 module.exports = Tour;
