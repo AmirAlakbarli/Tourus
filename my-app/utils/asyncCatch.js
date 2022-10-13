@@ -1,7 +1,7 @@
 function asyncCatch(callback) {
-  return function (req, res) {
-    callback(req, res).catch((err) => {
-      res.json({ success: false, error: err.message });
+  return function (req, res, next) {
+    callback(req, res, next).catch((err) => {
+      next(err);
     });
   };
 }

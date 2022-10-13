@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
+const errorHandler = require("./error/errorHandler");
+const GlobalError = require("./error/GlobalError");
 
 //! Routers
 const tourRouter = require("./routes/tourRouter");
@@ -16,15 +18,18 @@ if (process.env.NODE_ENV === "development") {
 
 //! Build in Middleware
 app.use(express.json());
+
+//! Routers
 app.use("/api/v1/tours", tourRouter);
 
 //! Any request with non existing endpoint
-app.use((req, res) => {
-  res.json({
-    success: false,
-    message: `The ${req.originalUrl} does not exist!`,
-  });
+app.use((req, res, next) => {
+  const message = new Error(`The ${req.originalUrl} does not exist!`);
+  next(message);
 });
+
+//! Any error with api
+app.use(errorHandler);
 
 //! define PORT number
 const PORT = process.env.PORT || 5000;

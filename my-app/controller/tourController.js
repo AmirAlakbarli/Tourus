@@ -1,6 +1,7 @@
 const Tour = require("../model/tour");
 const GlobalFilter = require("../utils/GlobalFilter");
 const asyncCatch = require("../utils/asyncCatch");
+const GlobalError = require("../error/GlobalError");
 //! Get Dev data Tours:
 
 exports.getAllTours = asyncCatch(async (req, res) => {
@@ -18,16 +19,11 @@ exports.getAllTours = asyncCatch(async (req, res) => {
   });
 });
 
-exports.getTourById = asyncCatch(async (req, res) => {
+exports.getTourById = asyncCatch(async (req, res, next) => {
   const id = req.params.id;
   const oneTour = await Tour.findById(id);
-  if (!oneTour)
-    return res.status(404).json({
-      success: false,
-      message: "Invalid id",
-    });
-
-  res.json({
+  if (!oneTour) return next(new GlobalError("Invalid id: FINDONE", 404));
+  res.status(200).json({
     success: true,
     data: {
       tour: oneTour,
@@ -35,7 +31,7 @@ exports.getTourById = asyncCatch(async (req, res) => {
   });
 });
 
-exports.createTour = asyncCatch(async (req, res) => {
+exports.createTour = asyncCatch(async (req, res, next) => {
   const newTour = await Tour.create(req.body);
   res.status(201).json({
     success: true,
@@ -45,17 +41,12 @@ exports.createTour = asyncCatch(async (req, res) => {
   });
 });
 
-exports.updateTour = asyncCatch(async (req, res) => {
+exports.updateTour = asyncCatch(async (req, res, next) => {
   const id = req.params.id;
   const updatedTour = await Tour.findByIdAndUpdate(id, req.body, {
     new: true,
   });
-
-  if (!updatedTour)
-    return res.status(404).json({
-      success: false,
-      message: "Invalid id",
-    });
+  if (!updatedTour) return next(new GlobalError("Invalid id: UPDATE", 404));
 
   res.status(200).json({
     success: true,
@@ -65,21 +56,19 @@ exports.updateTour = asyncCatch(async (req, res) => {
   });
 });
 
-exports.deleteTour = asyncCatch(async (req, res) => {
+exports.deleteTour = asyncCatch(async (req, res, next) => {
   const id = req.params.id;
   const deletedTour = await Tour.findByIdAndRemove(id);
-  if (!deletedTour)
-    return res.status(404).json({
-      success: false,
-      message: "Invalid id",
-    });
+  if (!deletedTour) return next(new GlobalError("Invalid id: DELETE", 404));
 
-  res
-    .status(200)
-    .json({ success: true, message: "Tour deleted", data: deletedTour });
+  res.status(200).json({
+    success: true,
+    message: "Tour deleted",
+    data: deletedTour,
+  });
 });
 
-exports.getStatistics = asyncCatch(async (req, res) => {
+exports.getStatistics = asyncCatch(async (req, res, next) => {
   const statistics = await Tour.aggregate([
     {
       $group: {
@@ -96,16 +85,16 @@ exports.getStatistics = asyncCatch(async (req, res) => {
         avgRating: 1,
       },
     },
-    {
-      $match: {
-        maxPrice: { $lte: 1997 },
-      },
-    },
+    // {
+    //   $match: {
+    //     maxPrice: { $lte: 1997 },
+    //   },
+    // },
   ]);
-  res.status(200).json({ succes: true, data: { statistics } });
+  res.status(200).json({ success: true, data: { statistics } });
 });
 
-exports.getTourStats = asyncCatch(async (req, res) => {
+exports.getTourStats = asyncCatch(async (req, res, next) => {
   const year = req.params.year;
   const data = await Tour.aggregate([
     {
@@ -133,5 +122,5 @@ exports.getTourStats = asyncCatch(async (req, res) => {
       $project: { _id: 0 },
     },
   ]);
-  res.status(200).json({ succes: true, data });
+  res.status(200).json({ success: true, data });
 });
