@@ -24,7 +24,7 @@ app.use("/api/v1/tours", tourRouter);
 
 //! Any request with non existing endpoint
 app.use((req, res, next) => {
-  const message = new Error(`The ${req.originalUrl} does not exist!`);
+  const message = new GlobalError(`The ${req.originalUrl} does not exist!`);
   next(message);
 });
 

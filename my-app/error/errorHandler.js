@@ -30,8 +30,8 @@ function handleCastError(err) {
 }
 
 function handleValidationError(err) {
-  const allErr = Object.values.join(" ");
-  return new GlobalError(allErr);
+  const allErr = Object.values(err.errors).join(" ");
+  return new GlobalError(allErr, 400);
 }
 
 module.exports = (err, req, res, next) => {
@@ -43,7 +43,7 @@ module.exports = (err, req, res, next) => {
       err = handleDublicateError(err);
     } else if (err.name === "CastError") {
       err = handleCastError(err);
-    } else if (err.code === "ValidationError") {
+    } else if (err.name === "ValidationError") {
       err = handleValidationError(err);
     }
     sendProdError(err, req, res);
