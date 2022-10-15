@@ -7,6 +7,7 @@ const GlobalError = require("./error/GlobalError");
 
 //! Routers
 const tourRouter = require("./routes/tourRouter");
+const userRouter = require("./routes/userRouter");
 
 //! Initializing the App
 const app = express();
@@ -19,8 +20,9 @@ if (process.env.NODE_ENV === "development") {
 //! Build in Middleware
 app.use(express.json());
 
-//! Routers
+//! api for routers
 app.use("/api/v1/tours", tourRouter);
+app.use("/api/v1/users", userRouter);
 
 //! Any request with non existing endpoint
 app.use((req, res, next) => {

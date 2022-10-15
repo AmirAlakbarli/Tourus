@@ -2,6 +2,7 @@ const Tour = require("../model/tour");
 const GlobalFilter = require("../utils/GlobalFilter");
 const asyncCatch = require("../utils/asyncCatch");
 const GlobalError = require("../error/GlobalError");
+const privateRoute = require("../middleware/privateRoute");
 //! Get Dev data Tours:
 
 exports.getAllTours = asyncCatch(async (req, res) => {

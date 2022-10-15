@@ -3,11 +3,12 @@ const router = express.Router();
 
 const tourController = require("../controller/tourController");
 const { setHeaderQuery } = require("../middleware/top3tours");
+const { privateRoute } = require("../middleware/privateRoute");
 
 //! Routes:
 
 //! Get all tours
-router.get("/", tourController.getAllTours);
+router.get("/", privateRoute, tourController.getAllTours);
 
 //! Get statistics
 router.get("/statistics", tourController.getStatistics);
