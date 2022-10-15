@@ -18,6 +18,12 @@ const userSchema = mongoose.Schema(
 
     photo: String,
 
+    role: {
+      type: String,
+      enum: ["user", "admin", "guide"],
+      default: "user",
+    },
+
     password: {
       type: String,
       required: [true, "Please enter a password!"],
@@ -43,7 +49,10 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.checkPassword = async function (realPassword, cryptedPassword) {
+userSchema.methods.checkPassword = async function (
+  realPassword,
+  cryptedPassword
+) {
   return await bcrypt.compare(realPassword, cryptedPassword);
 };
 const User = mongoose.model("user", userSchema);

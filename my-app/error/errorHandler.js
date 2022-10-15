@@ -34,18 +34,25 @@ function handleValidationError(err) {
   return new GlobalError(allErr, 400);
 }
 
+function handleTokenExpire(err) {
+  return new GlobalError("Session time out. Please log in again", 403);
+}
+
+function handleTokenError(err) {
+  return new GlobalError("Invalid Token", 403);
+}
+
 module.exports = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   if (process.env.NODE_ENV == "development") {
     sendDevError(err, req, res);
   } else if (process.env.NODE_ENV == "production") {
-    if (err.code === 11000) {
-      err = handleDublicateError(err);
-    } else if (err.name === "CastError") {
-      err = handleCastError(err);
-    } else if (err.name === "ValidationError") {
-      err = handleValidationError(err);
-    }
+    if (err.code === 11000) err = handleDublicateError(err);
+    else if (err.name === "CastError") err = handleCastError(err);
+    else if (err.name === "ValidationError") err = handleValidationError(err);
+    else if (err.name === "TokenExpiredError") err = handleTokenExpire(err);
+    else if (err.name === "JsonWebTokenError") err = handleTokenError(err);
+
     sendProdError(err, req, res);
   }
 
