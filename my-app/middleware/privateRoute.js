@@ -2,7 +2,7 @@ const GlobalError = require("../error/GlobalError");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const asyncCatch = require("../utils/asyncCatch");
-const User = require("../model/user");
+const User = require("../models/user");
 
 const privateRoute = asyncCatch(async (req, res, next) => {
   let token;

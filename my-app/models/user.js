@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const userSchema = mongoose.Schema(
   {
@@ -39,11 +40,16 @@ const userSchema = mongoose.Schema(
         message: "Please sure confirming password is same as password",
       },
     },
+
+    forgetPassword: String,
+    resetExpires: Date,
   },
   { timestamps: true }
 );
 
 userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
   next();
@@ -54,6 +60,13 @@ userSchema.methods.checkPassword = async function (
   cryptedPassword
 ) {
   return await bcrypt.compare(realPassword, cryptedPassword);
+};
+
+userSchema.methods.generatePassToken = async function () {
+  const resetToken = crypto.randomBytes(48).toString("hex");
+  this.forgetPassword = await bcrypt.hash(resetToken, 16);
+  this.resetExpires = Date.now() + 15 * 60 * 1000;
+  return resetToken;
 };
 const User = mongoose.model("user", userSchema);
 module.exports = User;

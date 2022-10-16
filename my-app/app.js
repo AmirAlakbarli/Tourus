@@ -4,13 +4,28 @@ const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
 const errorHandler = require("./error/errorHandler");
 const GlobalError = require("./error/GlobalError");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 
 //! Routers
 const tourRouter = require("./routes/tourRouter");
 const userRouter = require("./routes/userRouter");
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
 //! Initializing the App
 const app = express();
+
+//! Set limit for requests per window
+app.use(limiter);
+
+//! Make header more secure than regular
+app.use(helmet());
 
 //! Third party middleware
 if (process.env.NODE_ENV === "development") {

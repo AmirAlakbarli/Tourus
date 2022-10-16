@@ -1,4 +1,4 @@
-const Tour = require("../model/tour");
+const Tour = require("../models/tour");
 const GlobalFilter = require("../utils/GlobalFilter");
 const asyncCatch = require("../utils/asyncCatch");
 const GlobalError = require("../error/GlobalError");
