@@ -2,6 +2,7 @@ const Tour = require("../models/tour");
 const GlobalFilter = require("../utils/GlobalFilter");
 const asyncCatch = require("../utils/asyncCatch");
 const GlobalError = require("../error/GlobalError");
+const { deleteOne } = require("../utils/factory");
 //! Get Dev data Tours:
 
 exports.getAllTours = asyncCatch(async (req, res) => {
@@ -56,17 +57,7 @@ exports.updateTour = asyncCatch(async (req, res, next) => {
   });
 });
 
-exports.deleteTour = asyncCatch(async (req, res, next) => {
-  const id = req.params.id;
-  const deletedTour = await Tour.findByIdAndRemove(id);
-  if (!deletedTour) return next(new GlobalError("Invalid id: DELETE", 404));
-
-  res.status(200).json({
-    success: true,
-    message: "Tour deleted",
-    data: deletedTour,
-  });
-});
+exports.deleteTour = deleteOne(Tour);
 
 exports.getStatistics = asyncCatch(async (req, res, next) => {
   const statistics = await Tour.aggregate([

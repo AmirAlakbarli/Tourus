@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-
+const reviewController = require("../controller/reviewController")
 const tourController = require("../controller/tourController");
 const { setHeaderQuery } = require("../middleware/top3tours");
 const { privateRoute, access } = require("../middleware/privateRoute");
+const reviewRoute = require("./reviewRouter");
 
 //! Routes:
 
@@ -35,5 +36,14 @@ router.patch(
 
 //! delete tour
 router.delete("/:id", privateRoute, access("admin"), tourController.deleteTour);
+
+// router.get(
+//   "/:tourId/reviews",
+//   privateRoute,
+//   reviewController.getReviewsByTourId
+// );
+
+//! get reviews bu tourId
+router.use("/:tourId/reviews", reviewRoute);
 
 module.exports = router;
