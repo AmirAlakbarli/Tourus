@@ -2,8 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
-const errorHandler = require("./error/errorHandler");
-const GlobalError = require("./error/GlobalError");
+const errorHandler = require("./errors/errorHandler");
+const GlobalError = require("./errors/GlobalError");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 

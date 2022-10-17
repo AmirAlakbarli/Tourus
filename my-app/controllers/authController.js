@@ -1,7 +1,7 @@
 const asyncCatch = require("../utils/asyncCatch");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const GlobalError = require("../error/GlobalError");
+const GlobalError = require("../errors/GlobalError");
 const sendEmail = require("../utils/email");
 const bcrypt = require("bcryptjs");
 

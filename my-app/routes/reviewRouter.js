@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const reviewController = require("../controller/reviewController");
-const { privateRoute, access } = require("../middleware/privateRoute");
+const reviewController = require("../controllers/reviewController");
+const { privateRoute, access } = require("../middlewares/privateRoute");
 
 router.get("/", privateRoute, reviewController.getReviewsByTourId);
 // router.get("/:tourId", privateRoute, reviewController.getReviewsByTourId);
@@ -19,6 +19,5 @@ router.delete(
 //   privateRoute,
 //   reviewController.getReviewsByTourId
 // );
-
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const Tour = require("../models/tour");
 const GlobalFilter = require("../utils/GlobalFilter");
 const asyncCatch = require("../utils/asyncCatch");
-const GlobalError = require("../error/GlobalError");
+const GlobalError = require("../errors/GlobalError");
 const { deleteOne } = require("../utils/factory");
 //! Get Dev data Tours:
 

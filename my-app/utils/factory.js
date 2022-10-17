@@ -1,5 +1,5 @@
 const asyncCatch = require("./asyncCatch");
-const GlobalError = require("../error/GlobalError");
+const GlobalError = require("../errors/GlobalError");
 
 const deleteOne = (Model) =>
   asyncCatch(async (req, res, next) => {

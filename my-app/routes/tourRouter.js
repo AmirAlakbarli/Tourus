@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const reviewController = require("../controller/reviewController")
-const tourController = require("../controller/tourController");
-const { setHeaderQuery } = require("../middleware/top3tours");
-const { privateRoute, access } = require("../middleware/privateRoute");
+const reviewController = require("../controllers/reviewController");
+const tourController = require("../controllers/tourController");
+const { setHeaderQuery } = require("../middlewares/top3tours");
+const { privateRoute, access } = require("../middlewares/privateRoute");
 const reviewRoute = require("./reviewRouter");
 
 //! Routes:

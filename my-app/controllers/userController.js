@@ -1,5 +1,5 @@
 const asyncCatch = require("../utils/asyncCatch");
-const GlobalError = require("../error/GlobalError");
+const GlobalError = require("../errors/GlobalError");
 const User = require("../models/user");
 
 exports.changeUserData = asyncCatch(async (req, res) => {

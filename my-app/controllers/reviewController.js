@@ -1,5 +1,5 @@
 const asyncCatch = require("../utils/asyncCatch");
-const GlobalError = require("../error/GlobalError");
+const GlobalError = require("../errors/GlobalError");
 const Review = require("../models/review");
 const { deleteOne } = require("../utils/factory");
 
@@ -22,7 +22,7 @@ exports.createReview = asyncCatch(async (req, res, next) => {
     tour: req.params.tourId,
     creator: req.user._id,
   });
-  
+
   res.status(200).json({ success: true, data: { review } });
 });
 

@@ -1,4 +1,4 @@
-const GlobalError = require("../error/GlobalError");
+const GlobalError = require("../errors/GlobalError");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const asyncCatch = require("../utils/asyncCatch");
