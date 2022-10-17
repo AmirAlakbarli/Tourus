@@ -10,6 +10,7 @@ const helmet = require("helmet");
 //! Routers
 const tourRouter = require("./routes/tourRouter");
 const userRouter = require("./routes/userRouter");
+const reviewRouter = require("./routes/reviewRouter");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -38,6 +39,7 @@ app.use(express.json());
 //! api for routers
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 //! Any request with non existing endpoint
 app.use((req, res, next) => {

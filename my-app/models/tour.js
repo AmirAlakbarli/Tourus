@@ -89,6 +89,38 @@ const tourSchema = mongoose.Schema(
       type: [Date],
       required: [true, "Tour dates must be defined!"],
     },
+
+    startLocation: {
+      description: String,
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      coordinates: [Number],
+      address: String,
+    },
+
+    locations: [
+      {
+        description: String,
+        type: {
+          type: String,
+          enum: ["Point"],
+          default: "Point",
+        },
+        coordinates: [],
+        address: String,
+        day: Number,
+      },
+    ],
+
+    guides: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"user"
+      },
+    ],
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
@@ -113,10 +145,10 @@ tourSchema.pre("save", function (next) {
 // });
 
 //! Query based middleware
-// tourSchema.pre(/^find/, function (next) {
-//   this.find({ status: { $ne: 0 } });
-//   next();
-// });
+tourSchema.pre(/^find/, function (next) {
+  this.find({ status: { $ne: 0 } }).populate("guides");
+  next();
+});
 
 //! Aggregation middleware
 // tourSchema.pre("aggregate", function (next) {
