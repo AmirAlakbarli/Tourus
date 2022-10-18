@@ -1,7 +1,4 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
-const slugify = require("slugify");
-const Tour = require("./tour");
 
 const reviewSchema = mongoose.Schema(
   {

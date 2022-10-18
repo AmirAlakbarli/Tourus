@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const validator = require("validator");
-
 const tourSchema = mongoose.Schema(
   {
     name: {
@@ -136,19 +134,12 @@ tourSchema.virtual("reviews", {
   localField: "_id",
 });
 
-//! Docuement based middleware => Before create / after create
-//! Before
+//! Docuement based middleware => Before create
 tourSchema.pre("save", function (next) {
   // document
   this.slug = slugify(this.name, "-");
   next();
 });
-
-//! After
-// tourSchema.pre("save", function (next) {
-//   this.slug = slugify(this.name, "-");
-//   next();
-// });
 
 //! Query based middleware
 tourSchema.pre(/^find/, function (next) {
