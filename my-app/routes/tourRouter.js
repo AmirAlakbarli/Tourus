@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const reviewController = require("../controllers/reviewController");
+// const reviewController = require("../controllers/reviewController");
 const tourController = require("../controllers/tourController");
 const { setHeaderQuery } = require("../middlewares/top3tours");
 const { privateRoute, access } = require("../middlewares/privateRoute");

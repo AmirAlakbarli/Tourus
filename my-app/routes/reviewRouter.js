@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const reviewController = require("../controllers/reviewController");
 const { privateRoute, access } = require("../middlewares/privateRoute");
 
-router.get("/", privateRoute, reviewController.getReviewsByTourId);
+router.get("/", privateRoute, reviewController.getReviews);
 // router.get("/:tourId", privateRoute, reviewController.getReviewsByTourId);
 router.post("/", privateRoute, access("user"), reviewController.createReview);
 
