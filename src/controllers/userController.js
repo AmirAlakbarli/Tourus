@@ -8,5 +8,12 @@ exports.changeUserData = asyncCatch(async (req, res) => {
     email: req.body.email,
   });
 
+  if (!user) return next(new GlobalError("User not found!", 404));
+  res.status(200).json({ success: true, user });
+});
+
+exports.getUserData = asyncCatch(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) return next(new GlobalError("User not found!", 404));
   res.status(200).json({ success: true, user });
 });

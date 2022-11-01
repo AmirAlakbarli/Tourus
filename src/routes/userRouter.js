@@ -10,7 +10,9 @@ router.post("/forgetPassword", authController.forgetPassword);
 router.patch("/resetPassword/:id/:token", authController.resetPassword);
 
 router.use(privateRoute);
-router.patch("/changePassword", authController.changePassword);
-router.patch("/", userController.changeUserData);
+router.get("/userInfo", userController.getUserData);
+router.patch("/userInfo", userController.changeUserData);
+router.patch("/userInfo/changePassword", authController.changePassword);
+router.delete("/userInfo/deleteUser", authController.deleteUser);
 
 module.exports = router;

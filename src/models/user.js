@@ -30,16 +30,6 @@ const userSchema = mongoose.Schema(
       required: [true, "Please enter a password!"],
       select: false,
     },
-    passwordConfirm: {
-      type: String,
-      required: [true, "Please confirm password!"],
-      validate: {
-        validator: function (passwordConfirm) {
-          return passwordConfirm === this.password;
-        },
-        message: "Please sure confirming password is same as password",
-      },
-    },
 
     forgetPassword: String,
     resetExpires: Date,
@@ -49,9 +39,7 @@ const userSchema = mongoose.Schema(
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-
   this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
   next();
 });
 
@@ -68,5 +56,6 @@ userSchema.methods.generatePassToken = async function () {
   this.resetExpires = Date.now() + 15 * 60 * 1000;
   return resetToken;
 };
+
 const User = mongoose.model("user", userSchema);
 module.exports = User;

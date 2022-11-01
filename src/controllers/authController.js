@@ -13,11 +13,18 @@ function signJWT(id) {
 }
 
 exports.signUp = asyncCatch(async (req, res, next) => {
+  if (req.body.password !== req.body.passwordConfirm)
+    return next(
+      new GlobalError(
+        "Password and confirmation of password aren't the same!",
+        500
+      )
+    );
+
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
   });
 
   const token = signJWT(user._id);
@@ -60,7 +67,7 @@ exports.forgetPassword = asyncCatch(async (req, res, next) => {
       message: path,
     });
 
-    res.json({ success: true, message: "Email was sent!" });
+    res.status(200).json({ success: true, message: "Email was sent!" });
   } catch (error) {
     return next(new GlobalError("Cannot sent link to reset password!"));
   }
@@ -127,5 +134,22 @@ exports.changePassword = asyncCatch(async (req, res, next) => {
   res.status(201).json({
     success: true,
     token,
+  });
+});
+
+exports.deleteUser = asyncCatch(async (req, res, next) => {
+  const deletedUser = await User.findByIdAndDelete(req.user._id);
+  if (!deletedUser) return next(new GlobalError("User not found!", 500));
+
+  const isCorrect = await deletedUser.checkPassword(
+    req.body.password,
+    deletedUser.password
+  );
+
+  if (!isCorrect) return next(new GlobalError("User password incorrect!", 500));
+
+  res.status(200).json({
+    success: true,
+    message: "User deleted successfully",
   });
 });

@@ -2,15 +2,15 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
-const errorHandler = require("./errors/errorHandler");
-const GlobalError = require("./errors/GlobalError");
+const errorHandler = require("./src/errors/errorHandler");
+const GlobalError = require("./src/errors/GlobalError");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
 //! Routers
-const tourRouter = require("./routes/tourRouter");
-const userRouter = require("./routes/userRouter");
-const reviewRouter = require("./routes/reviewRouter");
+const tourRouter = require("./src/routes/tourRouter");
+const userRouter = require("./src/routes/userRouter");
+const reviewRouter = require("./src/routes/reviewRouter");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
